@@ -111,6 +111,7 @@ export const userSlice = createSlice({
     loginUserErrorSelector: (state) => state.loginUserError,
     isAuthCheckedSelector: (state) => state.isAuthChecked,
     userDataSelector: (state) => state.data,
+    userNameSelector: (state) => state.data?.name,
     registerUserErrorSelector: (state) => state.registerUserError,
     registerUserRequestSelector: (state) => state.registerUserRequest
   },
@@ -158,6 +159,7 @@ export const {
   isAuthCheckedSelector,
   userDataSelector,
   registerUserErrorSelector,
-  registerUserRequestSelector
+  registerUserRequestSelector,
+  userNameSelector
 } = userSlice.selectors;
 export const { authChecked, userLogout } = userSlice.actions;

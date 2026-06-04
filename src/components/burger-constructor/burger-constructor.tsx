@@ -31,6 +31,7 @@ export const BurgerConstructor: FC = () => {
     if (user && constructorItems.bun) {
       const ingredients = [
         constructorItems.bun._id,
+        constructorItems.bun._id,
         ...constructorItems.ingredients.map((el) => el._id)
       ];
       dispatch(makeOrder(ingredients));

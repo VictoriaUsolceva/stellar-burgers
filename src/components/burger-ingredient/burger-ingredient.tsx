@@ -5,6 +5,7 @@ import { BurgerIngredientUI } from '@ui';
 import { TBurgerIngredientProps } from './type';
 import { useDispatch } from '@selectors';
 import { addIngredients, setBun } from '@slices';
+import { v4 as uuid } from 'uuid';
 
 export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
   ({ ingredient, count }) => {
@@ -14,7 +15,8 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
     const handleAdd = () => {
       if (ingredient.type === 'bun') dispatch(setBun({ ...ingredient }));
       else {
-        dispatch(addIngredients({ ...ingredient, id: ingredient._id + count }));
+        const id = uuid();
+        dispatch(addIngredients({ ...ingredient, id }));
       }
     };
 

@@ -26,9 +26,7 @@ export const feedsSlice = createSlice({
   name: 'feeds',
   initialState,
   selectors: {
-    getFeedsSelector: (state) => state,
-    getFeedsOrderById: (state, number: number) =>
-      state.orders.find((element) => element.number === number)
+    getFeedsSelector: (state) => state
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -50,4 +48,4 @@ export const feedsSlice = createSlice({
   }
 });
 
-export const { getFeedsSelector, getFeedsOrderById } = feedsSlice.selectors;
+export const { getFeedsSelector } = feedsSlice.selectors;

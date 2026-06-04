@@ -1,4 +1,4 @@
-import { getOrdersApi, orderBurgerApi } from '@api';
+import { getOrderByNumberApi, getOrdersApi, orderBurgerApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
@@ -9,6 +9,7 @@ type TOrderState = {
   totalToday: number;
   error: string | null;
   isOrderRequest: boolean;
+  selectedByNumberOrder: TOrder | null;
 };
 
 const initialState: TOrderState = {
@@ -17,7 +18,8 @@ const initialState: TOrderState = {
   total: 0,
   totalToday: 0,
   error: null,
-  isOrderRequest: false
+  isOrderRequest: false,
+  selectedByNumberOrder: null
 };
 
 export const getOrders = createAsyncThunk('orders/getAll', async () => {
@@ -33,13 +35,23 @@ export const makeOrder = createAsyncThunk(
   }
 );
 
+export const getOrderByNumber = createAsyncThunk(
+  'order/getByNumber',
+  async (number: number) => {
+    const data = await getOrderByNumberApi(number);
+    return data;
+  }
+);
+
 export const ordersSlice = createSlice({
   name: 'orders',
   initialState,
   selectors: {
     ordersSelector: (state) => state.orders,
     isOrderRequestSelector: (state) => state.isOrderRequest,
-    getOrdersSellector: (state) => state
+    getOrdersSellector: (state) => state,
+    selectedByNumberOrderSellector: (state) => state.selectedByNumberOrder,
+    orderModalDataSellector: (state) => state.orderModalData
   },
   reducers: {
     clearOrderModalData: (state) => {
@@ -76,10 +88,24 @@ export const ordersSlice = createSlice({
         };
         state.orders = [...state.orders, order];
         state.orderModalData = order;
+      })
+      .addCase(getOrderByNumber.pending, (state) => {
+        state.selectedByNumberOrder = null;
+      })
+      .addCase(getOrderByNumber.rejected, (state, action) => {
+        state.error = action.error.message ?? null;
+      })
+      .addCase(getOrderByNumber.fulfilled, (state, action) => {
+        state.selectedByNumberOrder = action.payload.orders[0];
       });
   }
 });
 
-export const { getOrdersSellector, ordersSelector, isOrderRequestSelector } =
-  ordersSlice.selectors;
+export const {
+  getOrdersSellector,
+  ordersSelector,
+  isOrderRequestSelector,
+  orderModalDataSellector,
+  selectedByNumberOrderSellector
+} = ordersSlice.selectors;
 export const { clearOrderModalData } = ordersSlice.actions;

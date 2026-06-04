@@ -2,7 +2,11 @@ import { FC, useEffect, useMemo, useRef } from 'react';
 import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
-import { getFeeds, getFeedsOrderById, getIngredientsSellector } from '@slices';
+import {
+  getIngredientsSellector,
+  getOrderByNumber,
+  selectedByNumberOrderSellector
+} from '@slices';
 import { useDispatch, useSelector } from '@selectors';
 import { useParams } from 'react-router-dom';
 
@@ -10,18 +14,17 @@ export const OrderInfo: FC = () => {
   const dispatch = useDispatch();
   const dataFetch = useRef(false);
 
-  useEffect(() => {
-    if (dataFetch.current) return;
-    dataFetch.current = true;
-    dispatch(getFeeds());
-  }, [dispatch]);
-
   const { number } = useParams();
   const numericNumber = parseInt(number ?? '');
 
-  const orderData = useSelector((state) =>
-    getFeedsOrderById(state, numericNumber)
-  );
+  useEffect(() => {
+    if (dataFetch.current) return;
+    dataFetch.current = true;
+    dispatch(getOrderByNumber(numericNumber));
+  }, [dispatch]);
+
+  const orderData = useSelector(selectedByNumberOrderSellector);
+
   const { ingredients } = useSelector(getIngredientsSellector);
 
   /* Готовим данные для отображения */
