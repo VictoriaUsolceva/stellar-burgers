@@ -14,6 +14,8 @@ const initialState: TIngredientState = {
   isIngredientsLoading: false
 };
 
+export { initialState as ingredientsInitialState };
+
 export const getIngredients = createAsyncThunk('ingredients/getAll', async () =>
   getIngredientsApi()
 );
@@ -46,3 +48,4 @@ export const ingredientsSlice = createSlice({
 
 export const { getIngredientsSellector, getIngredientById } =
   ingredientsSlice.selectors;
+export default ingredientsSlice.reducer;

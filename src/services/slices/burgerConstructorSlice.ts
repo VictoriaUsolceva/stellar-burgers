@@ -16,6 +16,8 @@ const initialState: TBurgerConstructorState = {
   ingredients: []
 };
 
+export { initialState as burgerConstructorInitialState };
+
 export const burgerConstructorSlice = createSlice({
   name: 'burgerConstructor',
   initialState,
@@ -66,3 +68,4 @@ export const {
   removeIngrideent,
   clearBurgerConstructor
 } = burgerConstructorSlice.actions;
+export default burgerConstructorSlice.reducer;
